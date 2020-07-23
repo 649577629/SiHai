@@ -1,0 +1,32 @@
+server:
+  # 项目端口号
+  port: 8080
+  servlet:
+    # 项目访问路径
+    context-path: //
+spring:
+  application:
+    # 项目名称
+    name: sihai
+  profiles:
+    # 额外的application配置
+    include: data
+  mvc:
+    view:
+      # 模板前缀配置
+      prefix: /
+      # 模板后缀配置
+      suffix: html
+    # 静态文件请求匹配方式
+    static-path-pattern: /**
+  jackson:
+    # 时间校准
+    time-zone: Asia/Shanghai
+    # 时间格式化
+    date-format: yyyy-MM-dd HH:mm:ss
+  thymeleaf:
+    # 不缓存前端
+    cache: false
+logging:
+  # 日志记录.默认10MB自动打包gz压缩包.从0号开始.
+  file: log/sihai.log
