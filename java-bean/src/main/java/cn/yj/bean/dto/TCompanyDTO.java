@@ -82,11 +82,11 @@ public class TCompanyDTO implements Serializable {
 	private Integer approve;
 
 	/**修改时间*/
-	@ApiModelProperty(value = "修改时间", example = "2020-07-24 11:16:02" )
+	@ApiModelProperty(value = "修改时间", example = "2020-07-24 11:39:49" )
 	private Date setTime;
 
 	/**创建时间*/
-	@ApiModelProperty(value = "创建时间", example = "2020-07-24 11:16:02" )
+	@ApiModelProperty(value = "创建时间", example = "2020-07-24 11:39:49" )
 	private Date createTime;
 
 	/**创建用户ID*/
@@ -94,7 +94,7 @@ public class TCompanyDTO implements Serializable {
 	private String createID;
 
 	/**修改时间*/
-	@ApiModelProperty(value = "修改时间", example = "2020-07-24 11:16:02" )
+	@ApiModelProperty(value = "修改时间", example = "2020-07-24 11:39:49" )
 	private Date updateTime;
 
 	/**修改用户ID*/
