@@ -31,5 +31,20 @@
             <groupId>io.springfox</groupId>
             <artifactId>springfox-boot-starter</artifactId>
         </dependency>
+
+
+        <!-- 个人工具包 -->
+        <dependency>
+            <groupId>cn.fyy</groupId>
+            <artifactId>encrypt</artifactId>
+            <version>1.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cn.fyy</groupId>
+            <artifactId>project</artifactId>
+            <version>1.0</version>
+        </dependency>
+
     </dependencies>
 </project>

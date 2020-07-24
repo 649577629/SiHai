@@ -12,7 +12,7 @@
 
     <modules>
         <module>java-bean</module>
-        <module>sihai</module>
+        <module>project</module>
     </modules>
 
     <properties>
@@ -25,9 +25,9 @@
         <!-- Spring Cloud -->
         <spring-cloud.version>Hoxton.SR6</spring-cloud.version>
         <!-- Spring Cloud Alibaba -->
-        <spring-cloud-alibaba.version>null</spring-cloud-alibaba.version>
+        <spring-cloud-alibaba.version>2.2.1.RELEASE</spring-cloud-alibaba.version>
         <!--API接口-->
-        <springfox.version>2.9.2</springfox.version>
+        <springfox.version>3.0.0</springfox.version>
         <!-- 简化对象 lombok -->
         <lombok.version>1.18.12</lombok.version>
         <!-- 数据连接池 -->
@@ -49,6 +49,7 @@
                 <artifactId>spring-cloud-dependencies</artifactId>
                 <version>${spring-cloud.version}</version>
                 <type>pom</type>
+                <scope>import</scope>
             </dependency>
 
             <!-- Spring Cloud Alibaba -->
@@ -57,6 +58,7 @@
                 <artifactId>spring-cloud-alibaba-dependencies</artifactId>
                 <version>${spring-cloud-alibaba.version}</version>
                 <type>pom</type>
+                <scope>import</scope>
             </dependency>
 
             <!--Springfox2 接口API自动生成页面-->

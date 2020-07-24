@@ -70,7 +70,7 @@ public class TAdminDTO implements Serializable {
 	private String remark;
 
 	/**创建时间*/
-	@ApiModelProperty(value = "创建时间", example = "2020-07-21 23:42:44" )
+	@ApiModelProperty(value = "创建时间", example = "2020-07-24 11:16:02" )
 	private Date createTime;
 
 	/**创建用户ID*/
@@ -78,7 +78,7 @@ public class TAdminDTO implements Serializable {
 	private String createID;
 
 	/**修改时间*/
-	@ApiModelProperty(value = "修改时间", example = "2020-07-21 23:42:44" )
+	@ApiModelProperty(value = "修改时间", example = "2020-07-24 11:16:02" )
 	private Date updateTime;
 
 	/**修改用户ID*/
