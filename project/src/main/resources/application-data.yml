@@ -1,0 +1,374 @@
+# 日志
+logging:
+  # SQL日志输出
+  level:
+    # 会执行SQL的数据连接层
+    cn.fyy.test.mapper: debug
+spring:
+  # 数据源配置
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      # 拦截器
+      web-stat-filter:
+        # 是否启用
+        enabled: true
+        # 经常需要排除一些不必要的url，比如*.js,/jslib/*等等
+        exclusions: '*.js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico,/druid/*'
+        # 配置profileEnable能够监控单个url调用的sql列表
+        profile-enable: true
+        # 关闭session统计功能
+        session-stat-enable: false
+        # 拦截地址
+        url-pattern: /*
+      # 统计配置
+      stat-view-servlet:
+        # 是否启用
+        enabled: true
+        # 统计页面登录账号
+        login-password: sihai
+        # 统计页面登录密码
+        login-username: sihai
+        # 是否允许清空统计数据
+        reset-enable: false
+        # 访问地址
+        url-pattern: /druid/*
+        # 允许访问IP
+        allow: 
+        # 拒绝访问IP
+        deny: 
+      # AOP切面
+      aop-patterns: 'cn.yj.sihai.service.*,cn.yj.sihai.mapper.*'
+      # 用户数据库读数据源
+      read:
+        # 连接驱动
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        # 数据库地址
+        url: jdbc:mysql://121.42.158.113:3306/SiHai?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+        # 数据库账号
+        username: root
+        # 数据库密码
+        password: fyyain77
+        # 初始化连接大小
+        initial-size: 10
+        # 连接最小数
+        min-idle: 10
+        # 连接最大数
+        max-active: 100
+        # 获取连接等待超时的时间
+        max-wait: 60000
+        # 用来检测连接是否有效的sql，要求是一个查询语句，常用select 'x'。如果validationQuery为null，testOnBorrow、testOnReturn、testWhileIdle都不会起作用。
+        validation-query: select 'x'
+        # 申请连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能。
+        test-on-borrow: false
+        # 归还连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能。
+        test-on-return: false
+        # 建议配置为true，不影响性能，并且保证安全性。申请连接的时候检测，如果空闲时间大于timeBetweenEvictionRunsMillis，执行validationQuery检测连接是否有效。
+        test-while-idle: true
+        # 有两个含义：
+        #1) Destroy线程会检测连接的间隔时间，如果连接空闲时间大于等于minEvictableIdleTimeMillis则关闭物理连接。
+        #2) testWhileIdle的判断依据，详细看testWhileIdle属性的说明
+        time-between-eviction-runs-millis: 60000
+        # 连接保持空闲而不被驱逐的最小时间
+        min-evictable-idle-time-millis: 300000
+        # 连接泄漏监测 在内置监控页面weburi-detail.html中，查看JdbcPoolConnectionOpenCount和JdbcPoolConnectionCloseCount属性，如果不相等，就是泄漏了。
+        remove-abandoned: false
+        remove-abandoned-timeout: 1800
+        log-abandoned: true
+        # 属性类型是字符串，通过别名的方式配置扩展插件，常用的插件有：
+        # 监控统计用的filter:stat
+        # 日志用的filter:log4j
+        # 防御sql注入的filter:wall
+        filters: stat,slf4j,wall
+        # 细致化配置
+        # 读取拦截sql配置
+        filter:
+          wall:
+            # 是否启用
+            enabled: true
+            # 数据库类型
+            db-type: mysql
+            # 对被认为是攻击的SQL进行LOG.error输出
+            log-violation: true
+            # 对被认为是攻击的SQL抛出SQLExcepton
+            throw-exception: true
+            # 拦截配置
+            config:
+              # 拦截语句
+              # 是否允许执行SELECT语句
+              selelct-allow: true
+              # 是否允许执行SELECT * FROM T这样的语句。如果设置为false，不允许执行select * from t，但select * from (select id, name from t) a。这个选项是防御程序通过调用select *获得数据表的结构信息。
+              select-all-column-allow: true
+              # SELECT查询中是否允许INTO字句
+              select-into-allow: false
+              # 是否允许执行DELETE语句
+              delete-allow: false
+              # 是否允许执行UPDATE语句
+              update-allow: false
+              # 是否允许执行INSERT语句
+              insert-allow: false
+              # 是否允许执行REPLACE语句
+              replace-allow: true
+              # 是否允许通过jdbc的call语法调用存储过程
+              call-allow: false
+              # 是否允许使用SET语法
+              set-allow: false
+              # truncate语句是危险(删除所有数据无法回滚)，缺省打开，若需要自行关闭
+              truncate-allow: false
+              # 是否允许创建表
+              create-table-allow: false
+              # 是否允许执行Alter Table语句
+              alter-table-allow: false
+              # 是否允许修改表
+              drop-table-allow: false
+              # 是否允许语句中存在注释，Oracle的用户不用担心，Wall能够识别hints和注释的区别
+              comment-allow: false
+              # 是否允许非以上基本语句的其他语句，缺省关闭，通过这个选项就能够屏蔽DDL。
+              none-base-statement-allow: false
+              # 是否允许一次执行多条语句，缺省关闭
+              multi-statement-allow: false
+              # 是否允许执行mysql的use语句，缺省打开
+              use-allow: false
+              # 是否允许执行mysql的describe语句，缺省打开
+              describe-allow: false
+              # 是否允许执行mysql的show语句，缺省打开
+              show-allow: false
+              # 是否允许执行commit操作
+              commit-allow: false
+              # 是否允许执行roll back操作
+              rollback-allow: false
+              # 永真条件
+              # 检查SELECT语句的WHERE子句是否是一个永真条件
+              select-where-alway-true-check: true
+              # 检查SELECT语句的HAVING子句是否是一个永真条件
+              select-having-alway-true-check: true
+              # 检查DELETE语句的WHERE子句是否是一个永真条件
+              delete-where-alway-true-check: true
+              # 检查DELETE语句是否无where条件，这是有风险的，但不是SQL注入类型的风险
+              delete-where-none-check: true
+              # 检查UPDATE语句的WHERE子句是否是一个永真条件
+              update-where-alay-true-check: true
+              # 检查UPDATE语句是否无where条件，这是有风险的，但不是SQL注入类型的风险
+              update-where-none-check: true
+              # 检查查询条件(WHERE/HAVING子句)中是否包含AND永真条件
+              condition-and-alway-true-allow: true
+              # 检查查询条件(WHERE/HAVING子句)中是否包含AND永假条件
+              condition-and-alway-false-allow: true
+              # 检查查询条件(WHERE/HAVING子句)中是否包含LIKE永真条件
+              condition-like-true-allow: true
+              # 其他配置
+              # SELECT ... INTO OUTFILE 是否允许，这个是mysql注入攻击的常见手段，缺省是禁止的
+              select-into-outfile-allow: false
+              # 检测SELECT UNION
+              select-union-check: true
+              # 检测SELECT MINUS
+              select-minus-check: true
+              # 检测SELECT EXCEPT
+              select-except-check: true
+              # 检测SELECT INTERSECT
+              select-intersect-check: true
+              # 是否必须参数化，如果为True，则不允许类似WHERE ID = 1这种不参数化的SQL
+              must-parameterized: false
+              # 是否进行严格的语法检测，Druid SQL Parser在某些场景不能覆盖所有的SQL语法，出现解析SQL出错，可以临时把这个选项设置为false，同时把SQL反馈给Druid的开发者。
+              strict-syntax-check: true
+              # 查询条件中是否允许有XOR条件。XOR不常用，很难判断永真或者永假，缺省不允许。
+              condition-op-xor-allow: false
+              # 查询条件中是否允许有"&"、"~"、"|"、"^"运算符。
+              condition-op-bitwse-allow: true
+              # 查询条件中是否允许连续两个常量运算表达式
+              condition-double-const-allow: true
+              # 是否允许SELECT * FROM A MINUS SELECT * FROM B这样的语句
+              minus-allow: true
+              # 是否允许SELECT * FROM A INTERSECT SELECT * FROM B这样的语句
+              intersect-allow: true
+              # 拦截常量运算的条件，比如说WHERE FID = 3 - 1，其中"3 - 1"是常量运算表达式。
+              const-arithmetic-allow: true
+              # 是否允许limit 0这样的语句
+              limit-zero-allow: false
+              # 配置最大返回行数，如果select语句没有指定最大返回行数，会自动修改selct添加返回限制
+              select-limit: -1
+              # 禁用对象检测配置
+              # 检测是否使用了禁用的表
+              table-check: true
+              # 检测是否使用了禁用的Schema
+              schema-check: true
+              # 检测是否使用了禁用的函数
+              function-check: true
+              # 检测是否使用了“禁用对对象”
+              object-check: true
+              # 检测是否使用了“禁用的变量”
+              variant-check: true
+              # 指定的表只读，不能够在SELECT INTO、DELETE、UPDATE、INSERT、MERGE中作为"被修改表"出现<
+              read-only-tables:
+              # JDBC相关配置
+              # 是否允许调用Connection.getMetadata方法，这个方法调用会暴露数据库的表信息  false会导致报错但不影响功能使用
+              metadata-allow: true
+              # 是否允许调用Connection/Statement/ResultSet的isWrapFor和unwrap方法，这两个方法调用，使得有办法拿到原生驱动的对象，绕过WallFilter的检测直接执行SQL。
+              wrap-allow: false
+
+      # 用户数据库写数据源
+      write:
+        # 连接驱动
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        # 数据库地址
+        url: jdbc:mysql://121.42.158.113:3306/SiHai?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+        # 数据库账号
+        username: root
+        # 数据库密码
+        password: fyyain77
+        # 初始化连接大小
+        initial-size: 10
+        # 连接最小数
+        min-idle: 10
+        # 连接最大数
+        max-active: 100
+        # 获取连接等待超时的时间
+        max-wait: 60000
+        # 用来检测连接是否有效的sql，要求是一个查询语句，常用select 'x'。如果validationQuery为null，testOnBorrow、testOnReturn、testWhileIdle都不会起作用。
+        validation-query: select 'x'
+        # 申请连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能。
+        test-on-borrow: false
+        # 归还连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能。
+        test-on-return: false
+        # 建议配置为true，不影响性能，并且保证安全性。申请连接的时候检测，如果空闲时间大于timeBetweenEvictionRunsMillis，执行validationQuery检测连接是否有效。
+        test-while-idle: true
+        # 有两个含义：
+        #1) Destroy线程会检测连接的间隔时间，如果连接空闲时间大于等于minEvictableIdleTimeMillis则关闭物理连接。
+        #2) testWhileIdle的判断依据，详细看testWhileIdle属性的说明
+        time-between-eviction-runs-millis: 60000
+        # 连接保持空闲而不被驱逐的最小时间
+        min-evictable-idle-time-millis: 300000
+        # 连接泄漏监测 在内置监控页面weburi-detail.html中，查看JdbcPoolConnectionOpenCount和JdbcPoolConnectionCloseCount属性，如果不相等，就是泄漏了。
+        remove-abandoned: false
+        remove-abandoned-timeout: 1800
+        log-abandoned: true
+        # 属性类型是字符串，通过别名的方式配置扩展插件，常用的插件有：
+        # 监控统计用的filter:stat
+        # 日志用的filter:log4j
+        # 防御sql注入的filter:wall
+        filters: stat,slf4j,wall
+        # 细致化配置
+        # 写取拦截sql配置
+        filter:
+          wall:
+            # 是否启用
+            enabled: true
+            # 数据库类型
+            db-type: mysql
+            # 对被认为是攻击的SQL进行LOG.error输出
+            log-violation: true
+            # 对被认为是攻击的SQL抛出SQLExcepton
+            throw-exception: true
+            # 拦截配置
+            config:
+              # 拦截语句
+              # 是否允许执行SELECT语句
+              selelct-allow: true
+              # 是否允许执行SELECT * FROM T这样的语句。如果设置为false，不允许执行select * from t，但select * from (select id, name from t) a。这个选项是防御程序通过调用select *获得数据表的结构信息。
+              select-all-column-allow: true
+              # SELECT查询中是否允许INTO字句
+              select-into-allow: false
+              # 是否允许执行DELETE语句
+              delete-allow: true
+              # 是否允许执行UPDATE语句
+              update-allow: true
+              # 是否允许执行INSERT语句
+              insert-allow: true
+              # 是否允许执行REPLACE语句
+              replace-allow: true
+              # 是否允许通过jdbc的call语法调用存储过程
+              call-allow: true
+              # 是否允许使用SET语法
+              set-allow: true
+              # truncate语句是危险(删除所有数据无法回滚)，缺省打开，若需要自行关闭
+              truncate-allow: false
+              # 是否允许创建表
+              create-table-allow: true
+              # 是否允许执行Alter Table语句
+              alter-table-allow: true
+              # 是否允许修改表
+              drop-table-allow: true
+              # 是否允许语句中存在注释，Oracle的用户不用担心，Wall能够识别hints和注释的区别
+              comment-allow: false
+              # 是否允许非以上基本语句的其他语句，缺省关闭，通过这个选项就能够屏蔽DDL。
+              none-base-statement-allow: false
+              # 是否允许一次执行多条语句，缺省关闭
+              multi-statement-allow: true
+              # 是否允许执行mysql的use语句，缺省打开
+              use-allow: false
+              # 是否允许执行mysql的describe语句，缺省打开
+              describe-allow: false
+              # 是否允许执行mysql的show语句，缺省打开
+              show-allow: false
+              # 是否允许执行commit操作
+              commit-allow: true
+              # 是否允许执行roll back操作
+              rollback-allow: true
+              # 永真条件
+              # 检查SELECT语句的WHERE子句是否是一个永真条件
+              select-where-alway-true-check: true
+              # 检查SELECT语句的HAVING子句是否是一个永真条件
+              select-having-alway-true-check: true
+              # 检查DELETE语句的WHERE子句是否是一个永真条件
+              delete-where-alway-true-check: true
+              # 检查DELETE语句是否无where条件，这是有风险的，但不是SQL注入类型的风险
+              delete-where-none-check: true
+              # 检查UPDATE语句的WHERE子句是否是一个永真条件
+              update-where-alay-true-check: true
+              # 检查UPDATE语句是否无where条件，这是有风险的，但不是SQL注入类型的风险
+              update-where-none-check: true
+              # 检查查询条件(WHERE/HAVING子句)中是否包含AND永真条件
+              condition-and-alway-true-allow: true
+              # 检查查询条件(WHERE/HAVING子句)中是否包含AND永假条件
+              condition-and-alway-false-allow: true
+              # 检查查询条件(WHERE/HAVING子句)中是否包含LIKE永真条件
+              condition-like-true-allow: true
+              # 其他配置
+              # SELECT ... INTO OUTFILE 是否允许，这个是mysql注入攻击的常见手段，缺省是禁止的
+              select-into-outfile-allow: false
+              # 检测SELECT UNION
+              select-union-check: true
+              # 检测SELECT MINUS
+              select-minus-check: true
+              # 检测SELECT EXCEPT
+              select-except-check: true
+              # 检测SELECT INTERSECT
+              select-intersect-check: true
+              # 是否必须参数化，如果为True，则不允许类似WHERE ID = 1这种不参数化的SQL
+              must-parameterized: false
+              # 是否进行严格的语法检测，Druid SQL Parser在某些场景不能覆盖所有的SQL语法，出现解析SQL出错，可以临时把这个选项设置为false，同时把SQL反馈给Druid的开发者。
+              strict-syntax-check: true
+              # 查询条件中是否允许有XOR条件。XOR不常用，很难判断永真或者永假，缺省不允许。
+              condition-op-xor-allow: false
+              # 查询条件中是否允许有"&"、"~"、"|"、"^"运算符。
+              condition-op-bitwse-allow: true
+              # 查询条件中是否允许连续两个常量运算表达式
+              condition-double-const-allow: true
+              # 是否允许SELECT * FROM A MINUS SELECT * FROM B这样的语句
+              minus-allow: true
+              # 是否允许SELECT * FROM A INTERSECT SELECT * FROM B这样的语句
+              intersect-allow: true
+              # 拦截常量运算的条件，比如说WHERE FID = 3 - 1，其中"3 - 1"是常量运算表达式。
+              const-arithmetic-allow: true
+              # 是否允许limit 0这样的语句
+              limit-zero-allow: false
+              # 配置最大返回行数，如果select语句没有指定最大返回行数，会自动修改selct添加返回限制
+              select-limit: -1
+              # 禁用对象检测配置
+              # 检测是否使用了禁用的表
+              table-check: true
+              # 检测是否使用了禁用的Schema
+              schema-check: true
+              # 检测是否使用了禁用的函数
+              function-check: true
+              # 检测是否使用了“禁用对对象”
+              object-check: true
+              # 检测是否使用了“禁用的变量”
+              variant-check: true
+              # 指定的表只读，不能够在SELECT INTO、DELETE、UPDATE、INSERT、MERGE中作为"被修改表"出现<
+              read-only-tables:
+              # JDBC相关配置
+              # 是否允许调用Connection.getMetadata方法，这个方法调用会暴露数据库的表信息  false会导致报错但不影响功能使用
+              metadata-allow: true
+              # 是否允许调用Connection/Statement/ResultSet的isWrapFor和unwrap方法，这两个方法调用，使得有办法拿到原生驱动的对象，绕过WallFilter的检测直接执行SQL。
+              wrap-allow: false
